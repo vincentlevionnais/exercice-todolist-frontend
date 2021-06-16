@@ -23,8 +23,11 @@ let tasksList = {
       // a chaque itération de la boucle
       task.initTask( currentTaskElement );
     }
+
+    newTaskForm.initNewTaskForm();
   }
 
   // TODO Atelier : Gérer l'ajout d'une tache via le formulaire
+  
 
 };
