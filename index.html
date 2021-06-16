@@ -1,12 +1,213 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://kit.fontawesome.com/594a705294.js" crossorigin="anonymous"></script>
+
+    <title>TodoList</title>
 </head>
+
 <body>
-    
+    <section class="box">
+        <div class="block">
+        <nav class=" navbar is-light" role="navigation" aria-label="main navigation">
+            <div class="navbar-brand navbar-item">
+                <h1 class="navbar-item navbar-start title">
+                    TodoList Vincent
+                </h1>
+            </div>
+
+            <div id="navbarBasicExample" class="navbar-menu">
+
+                <div class="navbar-item navbar-end">
+                    <div class="navbar-item">
+
+                        <a class="button is-link is-outlined">
+                            Toutes
+                        </a>
+                        <a class="button is-link  is-outlined">
+                            Complètes
+                        </a>
+                        <a class="button is-link  is-outlined">
+                            Incomplètes
+                        </a>
+                    </div>
+
+                    <div class="navbar-item has-dropdown is-hoverable control ">
+                        <a class=" navbar-link button">
+                            Toutes les catégories
+                        </a>
+
+                        <div class="navbar-dropdown">
+                            <a class="navbar-item">
+                                Courses
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                O'Clock
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                Projet Professionnel
+                            </a>
+
+                        </div>
+                    </div>
+
+                    <a class="button is-ghost">
+                        Voir les archives
+                    </a>
+                </div>
+            </div>
+        </nav>
+</div>
+
+    <section class=" box hero is-white backround-color-primary"> 
+
+        
+            <div class="columns">
+                <div class="column ">
+                    <input class="input is-light" placeholder="Nom de la tâche"> 
+                </div>
+
+                <div class="column is-2 dropdown-item-link">
+                    <div class=" navbar-item has-dropdown is-hoverable block">
+                        <a class=" navbar-link button">
+                            <span class="hoverable"> Choisir une catégorie</span>
+                        </a>
+
+                        <div class="is-narrow navbar-dropdown">
+                            <a class="navbar-item">
+                                Courses
+                            </a>
+                            <hr class="navbar-divider ">
+                            <a class="navbar-item">
+                                O'Clock
+                            </a>
+                            <hr class="navbar-divider">
+                            <a class="navbar-item">
+                                Projet Professionnel
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="column buttons is-narrow">
+                    <a class="button is-info"> <i class="fas fa-plus"></i> &nbsp Ajouter</a>
+                </div>
+            </div>
+
+    </section>
+
+
+        <div class="card column">
+            <div class="columns">
+                <div class="column">
+                    <div class="input  is-light"> Acheter du pain </div>
+                </div>
+
+                <div class="column is-2 ">
+                    <div class="navbar-item">O'Clock</div>
+                </div>
+
+                <div class="column buttons is-narrow">
+                    <a class="button is-link fas fa-check"></a>
+                    <a class="button is-link fas fa-edit"></a>
+                    <a class="button is-link fas fa-archive"></a>
+                </div>
+            </div>
+        </div>
+        <progress class="box progress is-small is-danger " value="1" max="100">1%</progress>
+
+        <div class="card column">
+            <div class="columns">
+                <div class="column">
+                    <div class="input  is-light"> Réviser les projets PHP </div>
+                </div>
+
+                <div class="column is-2 ">
+                    <div class="navbar-item">O'Clock</div>
+                </div>
+
+                <div class="column buttons is-narrow">
+                    <a class="button is-link fas fa-check"></a>
+                    <a class="button is-link fas fa-edit"></a>
+                    <a class="button is-link fas fa-archive"></a>
+                </div>
+            </div>
+
+        </div>
+        <progress class="box progress is-small is-danger " value="80" max="100">80%</progress>
+
+        <div class="card column">
+            <div class="columns">
+                <div class="column">
+                    <div class="input  is-light"> Recevoir les événements en JS </div>
+                </div>
+
+                <div class="column is-2 ">
+                    <div class="navbar-item">O'Clock</div>
+                </div>
+
+                <div class="column buttons is-narrow">
+                    <a class="button is-link fas fa-undo"></a>
+                    <a class="button is-link fas fa-edit"></a>
+                    <a class="button is-link fas fa-archive"></a>
+                </div>
+            </div>
+
+        </div>
+        <progress class="box progress is-small is-danger " value="100" max="100">100%</progress>
+
+        <div class="card column">
+            <div class="columns">
+                <div class="column">
+                    <input class="input is-black">
+                </div>
+
+                <div class="column is-2 ">
+                    <div class="navbar-item">O'Clock</div>
+                </div>
+
+                <div class="column buttons is-narrow">
+                    <a class="button is-link fas fa-check"></a>
+                    <a class="button is-link fas fa-edit"></a>
+                    <a class="button is-link fas fa-archive"></a>
+                </div>
+            </div>
+
+        </div>
+        <progress class="box progress is-small is-danger " value="100" max="100">100%</progress>
+
+        
+        <div class="card column " >
+            <div class="columns">
+                <div class="column " >
+                    <div class="input is-light"> Exemple de tâche archivée </div>
+                </div>
+
+                <div class="column is-2 ">
+                    <div class="navbar-item ">O'Clock</div>
+                </div>
+
+                <div class="column buttons is-narrow">
+                    
+                    <a class="button fas fa-reply"></a>
+                    <a class="button far fa-trash-alt"></a>
+                </div>
+            </div>
+
+        </div>
+        <progress class="box progress is-small" value="80" max="100">80%</progress>
+
+
+    </section>
+
 </body>
+
 </html>
