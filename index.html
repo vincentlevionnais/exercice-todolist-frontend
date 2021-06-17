@@ -320,23 +320,15 @@
         </main>
     </div>
 
-    <script src="assets/js/app.js"></script>
-    <script src="assets/js/components/tasksList.js"></script>
-    <script src="assets/js/components/task.js"></script>
-    <script src="assets/js/components/newTaskForm.js"></script>
+<!-- Template utilisé pour la création d'une nouvelle tâche //-->
+<template id="task-template">
 
-</body>
-
-
-
-<template id="newTask">
-
-    <div class="task task--todo" data-category="#">
+    <div class="task task--todo" data-category="#Catégorie">
         <div class="task__content">
             <div class="task__name">
-                <p class="task__name-display"></p>
-                <input class="task__name-edit input" type="text" value="#"
-                    placeholder="Nom de la tâche" name="name" />
+                <p class="task__name-display">#Nouvelle tâche</p>
+                <input class="task__name-edit input" type="text" value="#Nouvelle tâche"
+                    placeholder="#Nouvelle tâche" name="name" />
             </div>
             <div class="task__category">
                 <p></p>
@@ -380,5 +372,12 @@
     </div>
 
 </template>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/components/taskForm.js"></script>
+<script src="assets/js/components/tasksList.js"></script>
+<script src="assets/js/components/task.js"></script>
+
+</body>
 
 </html>
