@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>TodoList</title>
+    <title>TodoList - VINCENT</title>
     <link rel="stylesheet" href="assets/css/font-awesome.css" />
     <link rel="stylesheet" href="assets/css/bulma.css" />
     <link rel="stylesheet" href="assets/css/style.css" />
@@ -16,7 +16,7 @@
         <header class="header">
             <div class="logo">
                 <a href=".">
-                    <h1 class="logo__title title is-3">TodoList</h1>
+                    <h1 class="logo__title title is-3">TodoList - VINCENT</h1>
                 </a>
             </div>
             <div class="filters">
@@ -25,6 +25,9 @@
                     <button class="filters__choice button">Complètes</button>
                     <button class="filters__choice button">Incomplètes</button>
                 </div>
+
+                <form id="dataNav"></form>
+<!-- Menu déroulant des catégories
                 <div class="filters__task filters__task--category select is-small">
                     <select class="filters__choice">
                         <option>Toutes les catégories</option>
@@ -33,6 +36,7 @@
                         <option>Projet Professionnel</option>
                     </select>
                 </div>
+-->
                 <div class="filters__task filters__task--archived">
                     <a class="filters__choice" href="#">Voir les archives</a>
                 </div>
@@ -50,6 +54,9 @@
                             <input class="task__name-edit input" type="text" placeholder="Nom de la tâche"
                                 name="name" />
                         </div>
+               
+                        <form id="dataTask"></form>
+<!-- Menu déroulant des catégories
                         <div class="task__category">
                             <div class="select is-small">
                                 <select>
@@ -60,6 +67,7 @@
                                 </select>
                             </div>
                         </div>
+-->
                         <div class="task__buttons">
                             <button class="task__button task__button--add button is-info">
                                 <span class="icon is-small">
@@ -374,10 +382,10 @@
 </template>
 
 <script src="assets/js/app.js"></script>
+<script src="assets/js/components/categoriesList.js"></script>
 <script src="assets/js/components/taskForm.js"></script>
 <script src="assets/js/components/tasksList.js"></script>
 <script src="assets/js/components/task.js"></script>
 
 </body>
-
 </html>

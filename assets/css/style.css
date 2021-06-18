@@ -1,4 +1,8 @@
-.container {
+  body {
+    background-color: #4c5863;
+  }
+  
+  .container {
     padding: 0.5rem;
   }
   
@@ -40,7 +44,8 @@
 
   .tasks .task{
 
-    box-shadow: 1px 3px 4px rgb(170, 170, 170) ;
+    box-shadow: 2px 4px 8px rgb(46, 46, 46) ;
+    background-color: #fff8d9;
   }
   
   .task__name {
@@ -123,6 +128,7 @@
   
   .task--add .task__content {
     border-color: #78b6df;
+    background-color: #cde7f1;
   }
   
   .task--add .task__name {

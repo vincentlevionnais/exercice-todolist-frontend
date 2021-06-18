@@ -8,6 +8,11 @@ let app = {
 
     // Initialisation du formulaire d'ajout !
     taskForm.init();
+
+
+    //!initialisation de la liste des catégories
+    categoriesList.init();
+
   }
 
 };
