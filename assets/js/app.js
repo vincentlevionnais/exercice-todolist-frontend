@@ -1,18 +1,19 @@
 
 let app = {
 
+  apiBaseURL : "https://benoclock.github.io/S07-todolist/",
+
   init: function()
   {
     // Initialisation de la liste des taches
-    tasksList.initializeTasksFromDOM();
+    // tasksList.initializeTasksFromDOM();
+    tasksList.initializeTasksFromAPI();
 
     // Initialisation du formulaire d'ajout !
     taskForm.init();
 
-
-    //!initialisation de la liste des catégories
+    // Initialisation du composant categoriesList
     categoriesList.init();
-
   }
 
 };

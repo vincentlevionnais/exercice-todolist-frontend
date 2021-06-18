@@ -1,69 +1,129 @@
-console.log("Module/composant categoriesList chargé !");
+console.log( "Module/composant categoriesList chargé !" );
 
 let categoriesList = {
 
-    apiBaseURL: "https://benoclock.github.io/S07-todolist/",
+  categories : {},
 
-    init: function () {
-        categoriesList.loadCategoriesFromAPI();
-    },
+  init: function()
+  {
+    categoriesList.loadCategoriesFromAPI();
+  },
 
-    loadCategoriesFromAPI: function () {
-        //console.log("JE SUIS DANS LA FONCTION!!!!!!!")
+  loadCategoriesFromAPI : function()
+  {
+    console.log( "loadCategoriesFromAPI" );
 
-        // On prépare la configuration de la requête HTTP
-        let fetchOptions = {
-            method: "GET",
-            mode: "cors",
-            cache: "no-cache"
-        };
+    // On créé un objet pour stocker les options du fetch
+    let fetchOptions = {
+      method : "GET",
+      mode   : "cors",
+      cache  : "no-cache"
+    };
 
-        let promise = fetch(categoriesList.apiBaseURL + "categories.json", fetchOptions);
+    // On envoi une requête à l'API pour récupérer les catégories
+    // On reçoit non pas la réponse mais une "promesse de réponse"
+    let promise = fetch( app.apiBaseURL + "categories.json", fetchOptions );
 
-        promise.then(categoriesList.ajaxCategoriesResponse)
+    // Lorsque la promesse sera résolue (et donc la réponse reçue)
+    // on executera la méthode convertResponseToJson qui recevra en 
+    // paramètre les informations de la réponse du serveur
+    let jsonPromise = promise.then( categoriesList.convertResponseToJson );
+    
+    // Lorsque la conversion en JSON est terminée, on appelle registerCategoriesListing
+    jsonPromise.then( categoriesList.registerCategoriesListing );
+  },
 
-        //console.log("ma requête est transmise !!!")
-    },
+  // Retourne la promesse de la conversion en JSON de la requete
+  convertResponseToJson: function( response )
+  {
+    console.log( "convertResponseToJson" );
+    return response.json();
+  },
 
-    ajaxCategoriesResponse: function (response) {
-        let object = response.json();
+  // Enregistrer les categories dans la propriété categories du module
+  registerCategoriesListing: function( jsonResponse )
+  {
+    console.log( "registerCategoriesListing" );
 
-        object.then(function (object) {
-            //console.log(object)
-            //console.log("mon objet 'tableau de catégories' est bien retourné!!!! GOOD!!")
+    // On enregistre dans le module chacune des categories reçues
+    for( let categoryData of jsonResponse )
+    {
+      // On stock les données de la catégorie à la "case"
+      // dont la clé correspond a son ID
+      // Malgré l'utilisation de crochets, on est bien
+      // dans un objet !
+      categoriesList.categories[ categoryData.id ] = categoryData;
+    }
 
+    // Pour comparer :
+    // console.log( jsonResponse );
+    // console.log( categoriesList.categories );
 
+    // Une fois arrivé ici, je suis sur que mes categories ont
+    // bien été chargées dans mon module à partir de l'API
+    // Je peux donc passer à la modification du DOM
+    categoriesList.displayCategoriesInFilter();
+    categoriesList.displayCategoriesInTaskAddForm();
+  },
 
-            var conteneurDataNav = document.getElementById('dataNav');
-            var ligneDataNav = document.createElement('div');
-            ligneDataNav.className = 'filters__task filters__task--category select is-small';
-            var selectionDataNav = document.createElement('select');
-            selectionDataNav.className = 'filters__choice';
+  displayCategoriesInFilter: function()
+  {
+    // On récupère la div dans laquelle on va créer notre select
+    let categoriesFilterParentElement = document.querySelector(".filters__task--category");
 
+    // On créé notre nouveau select
+    let categoriesFilterSelectElement = document.createElement( "select" );
 
+    // On créé les options de ce select
+    // SAUF QUE, ces options, sont crées de la même façon
+    // pour ce select et pour le select du form d'ajout
+    categoriesList.createOptionsForCategoriesSelect( categoriesFilterSelectElement );
 
+    // Une fois qu'on a créé les options du select, on peut l'ajouter au DOM
+    categoriesFilterParentElement.appendChild( categoriesFilterSelectElement );
+  },
 
-            for (index in object) {
+  displayCategoriesInTaskAddForm: function()
+  {
+    let categoriesFilterParentElement = document.querySelector(".task--add .task__category .select");
+    let categoriesFilterSelectElement = document.createElement( "select" );
+    categoriesList.createOptionsForCategoriesSelect( categoriesFilterSelectElement );
+    categoriesFilterParentElement.appendChild( categoriesFilterSelectElement );
+  },
 
-                category = object[index];
-                //console.log(category);
-                //console.log(category.name);
-                let option = (category.name);
-                //console.log(option);
+  // Fonction qui va créer les <option> du <select> passé en paramètre
+  createOptionsForCategoriesSelect: function( selectElement )
+  {
+    // Je boucle sur toutes les catégories que j'ai stocké
+    // précédemment dans mon module, dans la propriété categories
+    // petit problème, categoriesList.categories n'est pas un tableau
+    // la boucle for ... of ne marche donc pas dessus !
 
-                let element = document.createElement("option");
-                element.setAttribute('id', [index]);
+    // Deux solutions :
 
-                let text = document.createTextNode(option);
-                element.appendChild(text);
+    // 1 : Boucle for ... in
+    // TODO
 
-                selectionDataNav.appendChild(element);
-                ligneDataNav.appendChild(selectionDataNav);
-                conteneurDataNav.appendChild(ligneDataNav);
+    // 2 : Object.values() + for ... of
+    // On "converti" notre objet en tableau 
+    let categoriesArray = Object.values( categoriesList.categories );
+    // console.log( categoriesArray );
 
-            }
+    // BONUS : option "par défaut"
+    let optionElement = document.createElement("option");
+    optionElement.textContent = "Choisissez une catégorie";
+    selectElement.appendChild( optionElement );
 
-        })
-    },
+    for( let categoryData of categoriesArray )
+    {
+      // On créé notre option de toute pièce
+      let optionElement = document.createElement("option");
+      optionElement.textContent = categoryData.name;
+      optionElement.setAttribute( "name", categoryData.id );
 
-}
+      // On l'ajoute au select
+      selectElement.appendChild( optionElement );
+    }
+  }
+
+};
