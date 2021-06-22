@@ -22,7 +22,7 @@ let categoriesList = {
 
     // On envoi une requête à l'API pour récupérer les catégories
     // On reçoit non pas la réponse mais une "promesse de réponse"
-    let promise = fetch( app.apiBaseURL + "categories.json", fetchOptions );
+    let promise = fetch( app.apiBaseURL + "categories", fetchOptions );
 
     // Lorsque la promesse sera résolue (et donc la réponse reçue)
     // on executera la méthode convertResponseToJson qui recevra en 

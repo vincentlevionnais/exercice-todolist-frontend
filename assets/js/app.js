@@ -1,7 +1,7 @@
 
 let app = {
 
-  apiBaseURL : "https://benoclock.github.io/S07-todolist/",
+  apiBaseURL : "http://localhost:8080/",
 
   init: function()
   {

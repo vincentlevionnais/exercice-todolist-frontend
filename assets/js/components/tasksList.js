@@ -7,21 +7,23 @@ let tasksList = {
 
   initializeTasksFromAPI : function()
   {
+  
     // On créé un objet pour stocker les options du fetch
     let fetchOptions = {
       method : "GET",
       mode   : "cors",
-      cache  : "no-cache"
+      cache  : "no-cache",
+
     };
 
     // Cette fois, on enchaine les then avec des fonctions anonymes :cri:
-    fetch( app.apiBaseURL + "tasks.json", fetchOptions ) // <= Promesse de réponse a la requete
+    fetch( app.apiBaseURL + "tasks", fetchOptions ) // <= Promesse de réponse a la requete
     
     // A partir d'ici, on a une promesse de réponse
     .then( // <= Lorsqu'on reçoit la réponse
       function( response )
       {
-        return response.json(); // <= on renvoi une "promesse dez conversion en json"
+        return response.json(); // <= on renvoi une "promesse de conversion en json"
       }
     ) 
 
@@ -29,7 +31,7 @@ let tasksList = {
     .then( // <= Lors qu'on reçoit le JSON de la réponse
       function( jsonResponse )
       {
-        // console.log( jsonReponse );
+        //console.log( jsonReponse );
 
         // On enregistre dans le module chacune des taches reçues
         for( let taskData of jsonResponse )
@@ -39,10 +41,11 @@ let tasksList = {
           // Malgré l'utilisation de crochets, on est bien
           // dans un objet !
           tasksList.tasks[ taskData.id ] = taskData;
+          console.log (taskData);
 
           // On peut réutiliser notre bonne vieille méthode createNewTask
           // pour ajouter au DOM nos taches fraichement chargées depuis l'API
-          task.createNewTask( taskData.title, taskData.category.name );
+          task.createNewTask( taskData.title, taskData.category.name, taskData.id );
         }
       }
     )
@@ -70,8 +73,9 @@ let tasksList = {
       // a chaque itération de la boucle
       task.initTask( currentTaskElement );
     }
-  }
+  },
 
   // TODO Atelier : Gérer l'ajout d'une tache via le formulaire
-
+  
+  
 };
