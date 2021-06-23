@@ -30,9 +30,13 @@ let task = {
     // Récupération de tout les boutons verts pour marquer une tache comme terminée
     let taskValidateButtonElement = taskElement.querySelector(".task__button--validate");
     taskValidateButtonElement.addEventListener("click", task.handleClickOnValidateButton);
+
+    // Récupération de tout les boutons verts pour marquer une tache comme incomplète
+    let taskUnvalidateButtonElement = taskElement.querySelector(".task__button--incomplete");
+    taskUnvalidateButtonElement.addEventListener("click", task.handleClickOnUnvalidateButton);
   },
 
-  createNewTask: function (taskNewName, taskCategory, taskNewId) {
+  createNewTask: function (taskNewName, taskCategory, taskId) {
     // Première étape, on récupère le template
     let template = document.querySelector("#task-template");
 
@@ -43,15 +47,21 @@ let task = {
     newTaskFromTemplate.querySelector(".task").dataset.category = taskCategory;
     newTaskFromTemplate.querySelector(".task__category p").textContent = taskCategory;
 
-    // Je change mon Id
-    newTaskFromTemplate.querySelector(".task__name-display").dataset.id = taskNewId;
-
     // Pareil pour le nom de la tache
     newTaskFromTemplate.querySelector(".task__name-display").textContent = taskNewName;
     newTaskFromTemplate.querySelector(".task__name-edit").value = taskNewName;
     // Petite astuce pour avoir la value qui s'affiche également dans l'inspecteur
     // Mais ça fonctionne aussi sans, tant qu'on a fait la ligne précédente ;)
     newTaskFromTemplate.querySelector(".task__name-edit").setAttribute("value", taskNewName);
+
+    // On ajoute également au dataset, l'id de la tache
+    newTaskFromTemplate.querySelector(".task").dataset.id = taskId;
+
+    // Est-ce que la tache est complétée ? Si oui, je la marque comme tel
+
+    task.changeCompletion(newTaskFromTemplate.querySelector(".task"), tasksList.tasks[taskId].completion);
+
+    // BONUS : Il vaudrait mieux charger la progression des taches, même partielle
 
     // On oublie pas d'initialiser notre nouvelle tache
     // pour enregistrer les écouteurs d'événement etc
@@ -66,6 +76,21 @@ let task = {
     // C'est plus cohérent, mais plus long.
 
     // Bonus, vider le form
+  },
+
+  // Modifie le DOM d'une tache pour la marquer comme complétée
+  changeCompletion(taskElement, completion) {
+    if (completion == 100) {
+      taskElement.classList.remove("task--todo");
+      taskElement.classList.add("task--complete");
+    } else {
+      taskElement.classList.replace("task--complete", "task--todo");
+      taskElement.classList.add("task--todo")
+    }
+
+    let currentProgressBarElement = taskElement.querySelector(".progress-bar__level");
+    currentProgressBarElement.style.width = completion + "%";
+
   },
 
   // ===========================================
@@ -112,13 +137,45 @@ let task = {
     // On récupère toute la tache
     let taskElement = taskInputNameElement.closest(".task")
 
-    // A partir du parent, je peux récupérer facilement la balise <p> du nom
-    let taskNameElement = taskElement.querySelector(".task__name-display");
-    taskNameElement.textContent = taskNewName;
+    // On prépare les entêtes HTTP (headers) de la requête
+    // afin de spécifier que les données sont en JSON
+    const httpHeaders = new Headers();
+    httpHeaders.append("Content-Type", "application/json");
 
-    // On retire la classe CSS task--edit du parent
-    // ce qui remasquera l'input et réaffichera le <p>
-    taskElement.classList.remove("task--edit");
+    // On stocke les données à envoyer à l'API sous forme d'objet JS
+    let data = {
+      title: taskNewName
+    };
+
+    // On appelle l'API pour lui dire de modifier la complétion de la tache
+    let fetchOptions = {
+      method: "PATCH",
+      mode: "cors",
+      cache: "no-cache",
+      // On ajoute les headers dans les options
+      headers: httpHeaders,
+      // On ajoute les données, encodées en JSON, dans le corps de la requête
+      body: JSON.stringify(data)
+    };
+
+    // Cette fois, on enchaine les then avec des fonctions anonymes :cri:
+    fetch(app.apiBaseURL + "tasks/" + taskElement.dataset.id, fetchOptions) // <= Promesse de réponse a la requete
+      .then( // <= Lors qu'on reçoit la réponse (ici pas de JSON, car la réponse est "vide", code 204 No Content)
+        function (response) {
+          if (response.status === 204) {
+            // A partir du parent, je peux récupérer facilement la balise <p> du nom
+            let taskNameElement = taskElement.querySelector(".task__name-display");
+            taskNameElement.textContent = taskNewName;
+
+            // On retire la classe CSS task--edit du parent
+            // ce qui remasquera l'input et réaffichera le <p>
+            taskElement.classList.remove("task--edit");
+          } else {
+            alert("Une erreur est survenue lors du changement de nom !");
+          }
+        }
+      );
+
   },
 
   handleKeyUpOnTaskName: function (evt) {
@@ -136,62 +193,80 @@ let task = {
     // Récupération de la tache concernée
     let taskElement = validateButtonElement.closest(".task");
 
-    //! ATELIER --------------------------------------------------------------
-    let taskId = taskElement.querySelector('p').dataset.id;
-
-    // On stocke les données à transférer
-    const data = {
-      completion: 100,
-    };
-
     // On prépare les entêtes HTTP (headers) de la requête
     // afin de spécifier que les données sont en JSON
     const httpHeaders = new Headers();
     httpHeaders.append("Content-Type", "application/json");
 
-    // On consomme l'API pour ajouter en DB
-    const fetchOptions = {
-      method: 'PATCH',
-      mode: 'cors',
-      cache: 'no-cache',
+    // On stocke les données à envoyer à l'API sous forme d'objet JS
+    let data = {
+      completion: 100
+    };
+
+    // On appelle l'API pour lui dire de modifier la complétion de la tache
+    let fetchOptions = {
+      method: "PATCH",
+      mode: "cors",
+      cache: "no-cache",
       // On ajoute les headers dans les options
       headers: httpHeaders,
       // On ajoute les données, encodées en JSON, dans le corps de la requête
       body: JSON.stringify(data)
     };
 
-    // Exécuter la requête HTTP avec FETCH
-    fetch(app.apiBaseURL + 'tasks/' + taskId, fetchOptions)
-      .then(
-        function (response)
-        
-        {
-           console.log(response);
-          // Si HTTP status code à 201 => OK
-          if (response.status == 204) {
-            alert('ajout effectué');
-
-            // TODO selon ce qu'on veut faire une fois la réponse récupérée :
-            // Une fois qu'on a l'élément il ne reste plus qu'à changer la classe CSS
-            taskElement.classList.replace("task--todo", "task--complete");
-            // On aurait aussi pu classList.add task--complete et classList.remove task--todo
-
-            // Bonus : mettre la progressbar a 100% (on aurait pu le faire en CSS)
-            let currentProgressBarElement = taskElement.querySelector(".progress-bar__level");
-            currentProgressBarElement.style.width = "100%";
-
-
-
+    // Cette fois, on enchaine les then avec des fonctions anonymes :cri:
+    fetch(app.apiBaseURL + "tasks/" + taskElement.dataset.id, fetchOptions) // <= Promesse de réponse a la requete
+      .then( // <= Lors qu'on reçoit la réponse (ici pas de JSON, car la réponse est "vide", code 204 No Content)
+        function (response) {
+          if (response.status === 204) {
+            // On marque la tache comme complétée dans le DOM
+            task.changeCompletion(taskElement, 100);
           } else {
-            alert('L\'ajout a échoué');
+            alert("Une erreur est survenue lors de la complétion !");
           }
         }
-      )
+      );
+  },
 
-    //!---------------------------------------------------------------------------------
+  handleClickOnUnvalidateButton: function (evt) {
+    // Récupération de l'élément concerné 
+    let validateButtonElement = evt.currentTarget;
 
+    // Récupération de la tache concernée
+    let taskElement = validateButtonElement.closest(".task");
 
+    // On prépare les entêtes HTTP (headers) de la requête
+    // afin de spécifier que les données sont en JSON
+    const httpHeaders = new Headers();
+    httpHeaders.append("Content-Type", "application/json");
 
+    // On stocke les données à envoyer à l'API sous forme d'objet JS
+    let data = {
+      completion: 0
+    };
+
+    // On appelle l'API pour lui dire de modifier la complétion de la tache
+    let fetchOptions = {
+      method: "PATCH",
+      mode: "cors",
+      cache: "no-cache",
+      // On ajoute les headers dans les options
+      headers: httpHeaders,
+      // On ajoute les données, encodées en JSON, dans le corps de la requête
+      body: JSON.stringify(data)
+    };
+
+    // Cette fois, on enchaine les then avec des fonctions anonymes :cri:
+    fetch(app.apiBaseURL + "tasks/" + taskElement.dataset.id, fetchOptions) // <= Promesse de réponse a la requete
+      .then( // <= Lors qu'on reçoit la réponse (ici pas de JSON, car la réponse est "vide", code 204 No Content)
+        function (response) {
+          if (response.status === 204) {
+            // On marque la tache comme complétée dans le DOM
+            task.changeCompletion(taskElement, 0);
+          } else {
+            alert("Une erreur est survenue lors de la décomplétion!");
+          }
+        }
+      );
   }
-
 };

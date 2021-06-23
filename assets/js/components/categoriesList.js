@@ -119,7 +119,7 @@ let categoriesList = {
       // On créé notre option de toute pièce
       let optionElement = document.createElement("option");
       optionElement.textContent = categoryData.name;
-      optionElement.setAttribute( "name", categoryData.id );
+      optionElement.setAttribute( "value", categoryData.id );
 
       // On l'ajoute au select
       selectElement.appendChild( optionElement );
