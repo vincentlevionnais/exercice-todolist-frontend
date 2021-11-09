@@ -6,14 +6,12 @@ let app = {
   init: function()
   {
     // Initialisation de la liste des taches
-    // tasksList.initializeTasksFromDOM();
+    //tasksList.initializeTasksFromDOM();
     tasksList.initializeTasksFromAPI();
 
     // Initialisation du formulaire d'ajout !
     taskForm.init();
 
-    // Initialisation du composant categoriesList
-    categoriesList.init();
   }
 
 };

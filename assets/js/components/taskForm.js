@@ -1,4 +1,4 @@
-console.log( "Module/composant taskForm chargé !" );
+//console.log( "Module/composant taskForm chargé !" );
 
 let taskForm = {
 
@@ -21,22 +21,15 @@ let taskForm = {
 
     // Récupération du formulaire
     let formElement = evt.currentTarget;
-
     // Récupération des valeurs des input form :
     let taskNewNameElement = formElement.querySelector( ".task__name-edit" );
     let taskNewName = taskNewNameElement.value;
-
-    // Pareil pour la catégorie
-    let taskCategorySelectElement = formElement.querySelector( ".task__category select" );
-    let taskCategory = taskCategorySelectElement.value;
 
     // On prépare la requete d'ajout de task à l'API
     // On stocke les données à envoyer à l'API sous forme d'objet JS
     let taskData = {
       title : taskNewName,
-      categoryId : taskCategory,
-      completion : 0,
-      status : 1
+      completion : 1
     };
 
     // On prépare les entêtes HTTP (headers) de la requête
@@ -55,7 +48,7 @@ let taskForm = {
       body   : JSON.stringify( taskData )
     };
 
-    // Cette fois, on enchaine les then avec des fonctions anonymes :cri:
+    // Cette fois, on enchaine les then avec des fonctions anonymes
     fetch( app.apiBaseURL + "tasks", fetchOptions ) // <= Promesse de réponse a la requete
     
     // A partir d'ici, on a une promesse de réponse
@@ -69,7 +62,6 @@ let taskForm = {
         }
         else // Sinon, on gère les erreurs
         {
-          // TODO BONUS
           alert( "une erreur est survenue lors de l'ajout" );
           return;
         }
@@ -81,19 +73,13 @@ let taskForm = {
       {
         // Ici, pour l'ajout, jsonResponse contient l'objet Task inséré en base
         // On a donc aussi son id (et même created_at etc)
-        // console.log( jsonResponse );
+        console.log( jsonResponse );
 
-        // On oublie pas d'ajouter la nouvelle tache au tableau 
+        // On oublie pas d'ajouter la nouvelle tâche au tableau 
         tasksList.tasks[jsonResponse.id] = jsonResponse;
 
-        // console.log( categoriesList.categories );
-
-        // L'api ne nous donne pas le nom de la catégorie dans la réponse
-        // Heureusement, on a un tableau ou on les stocke
-        let category = categoriesList.categories[ jsonResponse.category_id ];
-
-        // On va créer notre nouvelle tache grace a une méthode du composant Task
-        task.createNewTask( jsonResponse.title, category.name, jsonResponse.id );
+        // On va créer notre nouvelle tâche grâce à une méthode du composant Task
+        task.createNewTask( jsonResponse.title, jsonResponse.id );
       }
     );
   }    
