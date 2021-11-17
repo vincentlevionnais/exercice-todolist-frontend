@@ -6,14 +6,11 @@ let app = {
   init: function()
   {
     // Initialisation de la liste des taches
-    //tasksList.initializeTasksFromDOM();
     tasksList.initializeTasksFromAPI();
 
-    // Initialisation du formulaire d'ajout !
+    // Initialisation du formulaire d'ajout
     taskForm.init();
-
   }
-
 };
 
 document.addEventListener( "DOMContentLoaded", app.init )

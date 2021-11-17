@@ -28,8 +28,6 @@ let tasksList = {
     .then( // <= Lorsqu'on reçoit le JSON de la réponse
       function( jsonResponse )
       {
-        //console.log( jsonReponse );
-
         // On enregistre dans le module chacune des taches reçues
         for( let taskData of jsonResponse )
         {

@@ -48,21 +48,17 @@ let task = {
     // Pareil pour le nom de la tache
     newTaskFromTemplate.querySelector(".task__name-display").textContent = taskNewName;
     newTaskFromTemplate.querySelector(".task__name-edit").value = taskNewName;
-    // Petite astuce pour avoir la value qui s'affiche également dans l'inspecteur
-    // Mais ça fonctionne aussi sans, tant qu'on a fait la ligne précédente.
-    newTaskFromTemplate.querySelector(".task__name-edit").setAttribute("value", taskNewName);
 
-    // On ajoute également au dataset, l'id de la tache
+    // On ajoute également un dataset, avec l'id de la tâche
     newTaskFromTemplate.querySelector(".task").dataset.id = taskId;
 
-    // Est-ce que la tache est complétée ? Si oui, je la marque comme tel
+    // Est-ce que la tâche est complétée ? Si oui, je la marque comme telle
     task.changeCompletion(newTaskFromTemplate.querySelector(".task"), tasksList.tasks[taskId].completion);
 
-    // On initialise notre nouvelle tache
-    // pour enregistrer les écouteurs d'événement etc
+    // On initialise notre nouvelle tâche, pour enregistrer les écouteurs d'événement, etc...
     task.initTask(newTaskFromTemplate);
 
-    // On peut ajouter notre nouvelle tache a notre page
+    // On peut ajouter notre nouvelle tâche à notre page
     let taskList = document.querySelector(".tasks");
     taskList.prepend(newTaskFromTemplate);    
   },

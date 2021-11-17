@@ -71,9 +71,6 @@ let taskForm = {
     .then( // <= Lors qu'on reçoit la réponse convertie en JSON
       function( jsonResponse )
       {
-        // Ici, pour l'ajout, jsonResponse contient l'objet Task inséré en base
-        // On a donc aussi son id (et même created_at etc)
-        console.log( jsonResponse );
 
         // On oublie pas d'ajouter la nouvelle tâche au tableau 
         tasksList.tasks[jsonResponse.id] = jsonResponse;
